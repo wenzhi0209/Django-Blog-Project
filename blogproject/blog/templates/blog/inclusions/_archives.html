@@ -1,0 +1,12 @@
+<div class="widget widget-archives">
+    <h3 class="widget-title">Archives Record</h3>
+    <ul>
+      {% for date in date_list %}
+        <li>
+          <a href="{% url 'blog:archive' date.year date.month %}">{{ date.year }} / {{ date|date:'M' }} </a>
+        </li>
+      {% empty %}
+        Empty Record!
+      {% endfor %}
+    </ul>
+  </div>
