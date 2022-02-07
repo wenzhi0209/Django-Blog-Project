@@ -1,29 +1,41 @@
+from multiprocessing import context
 from django.shortcuts import get_object_or_404, render
 
 import markdown
 from .models import Category, Post,Tag
-import pygments
 import re
 
 from django.utils.text import slugify
 from markdown.extensions.toc import TocExtension
+
+from django.views.generic import ListView
 # Create your views here.
 
+class IndexView(ListView):
+    model=Post
+    template_name='blog/index.html'
+    context_object_name='post_list'
 
-def index(request):
-    post_list = Post.objects.all()
 
-    context = {
-        'title': 'Homepage',
-        'index_title': 'Post Index',
-        'post_list': post_list,
-    }
+# def index(request):
+#     post_list = Post.objects.all()
 
-    return render(request, 'blog/index.html', context)
+#     context = {
+#         'title': 'Homepage',
+#         'index_title': 'Post Index',
+#         'post_list': post_list,
+#     }
+
+#     return render(request, 'blog/index.html', context)
+
+
 
 
 def detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    #views +1
+    post.increase_views()
+
     md = markdown.Markdown(extensions=[
         'markdown.extensions.extra',
         'markdown.extensions.codehilite',
@@ -41,29 +53,48 @@ def detail(request, pk):
     }
     return render(request, 'blog/detail.html', context=context)
 
-def archive(request, year, month):
-    post_list= Post.objects.filter(
-        time_created__year=year,
-        time_created__month=month,
-    )
 
-    title= 'Archive in {}/{}'.format(month,year)
-    context={
-        'title':title,
-        'post_list':post_list,
-    }
+class ArchiveView(IndexView):
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            time_created__year=self.kwargs.get('year'), 
+            time_created__month=self.kwargs.get('month'),
+        )
+    
+    
 
-    return render(request,'blog/index.html',context=context)
+# def archive(request, year, month):
+#     post_list= Post.objects.filter(
+#         time_created__year=year,
+#         time_created__month=month,
+#     )
 
-def category(request,pk):
-    category= get_object_or_404(Category,pk=pk)
-    post_list= Post.objects.filter(category=category)
+#     title= 'Archive in {}/{}'.format(month,year)
+#     context={
+#         'title':title,
+#         'post_list':post_list,
+#     }
 
-    context={
-        'title': category.name,
-        'post_list':post_list,
-    }
-    return render(request,'blog/index.html',context=context)
+#     return render(request,'blog/index.html',context=context)
+
+class CategoryView(ListView):
+    model=Post
+    template_name='blog/index.html'
+    context_object_name='post_list'
+
+    def get_queryset(self):
+        cate =get_object_or_404(Category,pk=self.kwargs.get('pk'))
+        return super(CategoryView,self).get_queryset().filter(category=cate)
+    
+# def category(request,pk):
+#     category= get_object_or_404(Category,pk=pk)
+#     post_list= Post.objects.filter(category=category)
+
+#     context={
+#         'title': category.name,
+#         'post_list':post_list,
+#     }
+#     return render(request,'blog/index.html',context=context)
 
 def tag(request,pk):
     tag=get_object_or_404(Tag,pk=pk)

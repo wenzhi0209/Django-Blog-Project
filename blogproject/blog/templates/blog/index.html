@@ -14,7 +14,7 @@
                         datetime="2012-11-09T23:15:57+00:00">{{post.time_created}}</time></a></span>
             <span class="post-author"><a href="#">{{post.author}}</a></span>
             <span class="comments-link"><a href="{{ post.get_absolute_url }}#comment-area">{{post.comment_set.count}} Comment(s) </a></span>
-            <span class="views-count"><a href="#"> Views </a></span>
+            <span class="views-count"><a href="{{ post.get_absolute_url }}">{{ post.views }} views </a></span>
         </div>
     </header>
     <div class="entry-content clearfix">

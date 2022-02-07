@@ -1,5 +1,7 @@
 
 from distutils import extension
+from turtle import update
+from django import views
 from django.urls import reverse
 from django.db import models
 from django.contrib.auth.models import User
@@ -46,16 +48,21 @@ class Post(models.Model):
 
     like_count=models.IntegerField('Likes Count',default=0)
 
+    #calculate views
+    views=models.PositiveIntegerField(default=0,editable=False)
+
     def save(self,*args,**kwargs):
         self.time_modified=timezone.now()
 
         md = markdown.Markdown(extensions=['markdown.extensions.extra','markdown.extensions.codehilite'])
 
         self.post_abstract=strip_tags(md.convert(self.text))[:50]
-    
-
-
         super().save(*args,**kwargs)
+
+    # increse view function
+    def increase_views(self):
+        self.views +=1 
+        self.save(update_fields=['views'])
 
     def __str__(self):
         return self.title
