@@ -22,6 +22,38 @@
     <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'blog/js/pace.min.js' %}"></script>
     <script src="{% static 'blog/js/modernizr.custom.js' %}"></script>
+
+    <style>
+        .codehilite {
+          padding: 0;
+        }
+    
+        /* for block of numbers */
+        .hljs-ln-numbers {
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+    
+          text-align: center;
+          color: #ccc;
+          border-right: 1px solid #CCC;
+          vertical-align: top;
+          padding-right: 5px;
+        }
+    
+        .hljs-ln-n {
+          width: 30px;
+        }
+    
+        /* for block of code */
+        .hljs-ln .hljs-ln-code {
+          padding-left: 10px;
+          white-space: pre;
+        }
+    </style>
 </head>
 
 <body>
@@ -108,7 +140,7 @@
                     {% show_tags %}
 
                     <div class="rss">
-                        <a href=""><span class="ion-social-rss-outline"></span> RSS 订阅</a>
+                        <a href=""><span class="ion-social-rss-outline"></span> RSS Subscription</a>
                     </div>
                 </aside>
             </div>
@@ -118,9 +150,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <p class="copyright">&copy 2017 - 采集自<a href="http://www.cssmoban.com/" target="_blank"
+                    <p class="copyright">&copy 2017 - from<a href="http://www.cssmoban.com/" target="_blank"
                             title="模板之家">模板之家</a>
-                        - 由<a href="http://zmrenwu.com/" title="网页模板" target="_blank">追梦人物的博客</a>修改
+                        - modified by <a href="http://zmrenwu.com/" title="网页模板" target="_blank">追梦人物的博客</a>
                     </p>
                 </div>
             </div>
@@ -142,5 +174,11 @@
 
 </body>
 <script src="{% static 'blog/js/script.js' %}"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.8/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+  hljs.initLineNumbersOnLoad();
+</script>
 
 </html>
